@@ -11,15 +11,12 @@ from collections import defaultdict, Counter
 from multiprocessing import Pool
 from functools import partial
 
+from transformers import AutoTokenizer, AutoModel
+tokenizer = AutoTokenizer.from_pretrained("bandainamco-mirai/distilbert-base-japanese")
 
-from transformers import *
-model_name = 'distilbert-base-uncased'
-device = 'cuda:0'
-config = DistilBertConfig.from_pretrained(model_name, output_hidden_states=True, output_attentions=True)
-tokenizer = DistilBertTokenizer.from_pretrained(model_name, do_lower_case=True)
+model = AutoModel.from_pretrained("bandainamco-mirai/distilbert-base-japanese")
 model = DistilBertModel.from_pretrained(model_name, config=config)
 model.eval()
-model.to(device) 
                 
 def truncate(tokens):
     if len(tokens) > tokenizer.max_len - 2:
